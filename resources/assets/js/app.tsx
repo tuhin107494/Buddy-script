@@ -22,6 +22,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Check for active session
     const sessionUser = getSession();
+    console.log('Session user:', sessionUser);
     if (sessionUser) {
       setUser(sessionUser as User);
       setCurrentPage('feed');
@@ -43,6 +44,8 @@ const App: React.FC = () => {
   if (isInitializing) {
     return <div className="h-screen flex items-center justify-center bg-gray-100 text-gray-500">Loading BuddyScript...</div>;
   }
+
+  console.log('Rendering App, currentPage:', currentPage, 'user:', user);
 
 
   return (

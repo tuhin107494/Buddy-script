@@ -46,8 +46,8 @@ const FeedNavbar: React.FC<Props> = ({ currentUser, onLogout }) => {
               </Badge>
 
               <div className="flex items-center gap-2 border-l pl-4 ml-2 cursor-pointer" onClick={onLogout} title="Logout">
-                <Avatar src={currentUser?.avatar || `https://ui-avatars.com/api/?name=${currentUser.firstName}+${currentUser.lastName}`} />
-                <span className="text-sm font-medium hidden md:block text-gray-700">{currentUser.firstName} {currentUser.lastName}</span>
+                <Avatar src={currentUser?.avatar || `https://ui-avatars.com/api/?name=${currentUser.name}`} />
+                <span className="text-sm font-medium hidden md:block text-gray-700">{currentUser.name} </span>
                 <Button type="text" icon={<LogoutOutlined />} />
               </div>
             </Space>
