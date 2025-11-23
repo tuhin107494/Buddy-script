@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Post, Comment } from '../types';
 import { MoreHorizontal, Heart, MessageCircle, Share2, Send } from 'lucide-react';
+import { Button } from 'antd';
 
 const CommentNode: React.FC<{
   comment: Comment;
@@ -27,13 +28,13 @@ const CommentNode: React.FC<{
           <p className="text-sm text-gray-800 break-words">{comment.content}</p>
         </div>
         <div className="flex gap-3 px-2 mt-1 text-xs text-gray-500 font-medium items-center">
-           <button className="hover:underline">Like</button>
-           <button 
-             className="hover:underline text-primary" 
+           <Button className="hover:underline !border-none">Like</Button>
+           <Button 
+             className="hover:underline text-primary !border-none" 
              onClick={() => setIsReplying(!isReplying)}
            >
              Reply
-           </button>
+           </Button>
            <span>2m</span>
         </div>
 
@@ -48,9 +49,9 @@ const CommentNode: React.FC<{
                 placeholder={`Reply to ${comment.user.firstName}...`}
                 className="flex-1 bg-gray-100 rounded-full px-3 py-1 text-sm outline-none focus:ring-1 focus:ring-primary"
              />
-             <button onClick={handleSubmit} className="text-primary hover:bg-blue-50 p-1 rounded-full">
+             <Button onClick={handleSubmit} className="!border-none text-primary hover:bg-blue-50 p-1 rounded-full">
                <Send className="w-3 h-3" />
-             </button>
+             </Button>
           </div>
         )}
 
@@ -92,9 +93,9 @@ const PostCard: React.FC<{
             </div>
           </div>
         </div>
-        <button className="text-gray-400 hover:bg-gray-100 p-1 rounded-full">
+        <Button className="!border-none text-gray-400 hover:bg-gray-100 p-1 rounded-full">
           <MoreHorizontal className="w-5 h-5" />
-        </button>
+        </Button>
       </div>
 
       {post.content && (
@@ -129,24 +130,24 @@ const PostCard: React.FC<{
       </div>
 
       <div className="px-2 py-1 flex items-center justify-between">
-        <button 
+        <Button 
           onClick={onLike}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium ${isLiked ? 'text-primary' : 'text-gray-600'}`}
+          className={`!border-none flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium ${isLiked ? 'text-primary' : 'text-gray-600'}`}
         >
           <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
           Like
-        </button>
-        <button 
+        </Button>
+        <Button 
           onClick={() => setShowComments(!showComments)}
-          className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600"
+          className="!border-none flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600"
         >
           <MessageCircle className="w-5 h-5" />
           Comment
-        </button>
-        <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600">
+        </Button>
+        <Button className="!border-none flex-1 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600">
           <Share2 className="w-5 h-5" />
           Share
-        </button>
+        </Button>
       </div>
 
       {showComments && (
@@ -176,17 +177,17 @@ const PostCard: React.FC<{
                    placeholder="Write a comment..." 
                    className="w-full rounded-full bg-gray-100 px-4 py-2 pr-10 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
-                <button 
+                <Button 
                   onClick={() => {
                     if (commentText.trim()) {
                       onComment(commentText);
                       setCommentText('');
                     }
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-primary p-1 hover:bg-blue-50 rounded-full"
+                  className="!border-none absolute right-2 top-1/2 -translate-y-1/2 text-primary p-1 hover:bg-blue-50 rounded-full"
                 >
                   <Send className="w-4 h-4" />
-                </button>
+                </Button>
              </div>
           </div>
         </div>
