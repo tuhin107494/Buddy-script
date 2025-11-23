@@ -26,7 +26,7 @@ const CreatePostCard: React.FC<Props> = ({ currentUser, newPostContent, setNewPo
             <Input
               type="text" 
               placeholder="Write something ..." 
-             className="!border-none"
+              className="!border-none"
               value={newPostContent}
               onChange={(e) => setNewPostContent(e.target.value)}
             />
@@ -40,12 +40,12 @@ const CreatePostCard: React.FC<Props> = ({ currentUser, newPostContent, setNewPo
            ) : (
                <img src={newPostImage} alt="Preview" className="w-full max-h-64 object-contain" />
            )}
-           <button 
+           <Button 
             onClick={() => setNewPostImage('')}
             className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white p-1 rounded-full transition-colors"
            >
              <X className="w-4 h-4" />
-           </button>
+           </Button>
         </div>
       )}
 
@@ -57,28 +57,28 @@ const CreatePostCard: React.FC<Props> = ({ currentUser, newPostContent, setNewPo
 
       <div className="flex items-center justify-between bg-blue-50 p-3 rounded-xl">
         <div className="flex gap-1 md:gap-4 overflow-x-auto">
-          <button 
+          <Button 
             onClick={onOpenFile}
-            className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 !bg-blue-50    whitespace-nowrap !border-none"
           >
             <ImageIcon className="w-5 h-5 text-green-500" />
             <span className="text-sm font-medium">Photo</span>
-          </button>
-          <button 
+          </Button>
+          <Button 
             onClick={onOpenFile}
-            className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 !bg-blue-50  whitespace-nowrap !border-none"
           >
             <Video className="w-5 h-5 text-blue-500" />
             <span className="text-sm font-medium">Video</span>
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+          </Button>
+          <Button className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg !bg-blue-50  transition-colors whitespace-nowrap !border-none">
             <Calendar className="w-5 h-5 text-yellow-500" />
             <span className="text-sm font-medium">Event</span>
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+          </Button>
+          <Button className="flex items-center gap-1.5 px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg !bg-blue-50  transition-colors whitespace-nowrap !border-none" >
             <FileText className="w-5 h-5 text-red-500" />
             <span className="text-sm font-medium">Article</span>
-          </button>
+          </Button>
         </div>
         
         <div className="flex items-center gap-2">

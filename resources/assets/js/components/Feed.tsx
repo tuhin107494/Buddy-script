@@ -182,7 +182,7 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
                             </div>
                         ) : (
                             <div className="space-y-6">
-                                {posts.map(post => (
+                                {posts.length>0 && posts.map(post => (
                                     <PostCard
                                         key={post.id}
                                         post={post}
@@ -202,7 +202,7 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
 
                     </div>
 
-          
+                    <RightSidebar users={users} currentUser={currentUser} />
 
 
                 </div>
