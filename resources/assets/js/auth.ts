@@ -11,7 +11,7 @@ export async function loginUser(email: string, password: string): Promise<User> 
 
     try {
         const { data } = await axios.post('/api/login', { email, password }, { headers: { Accept: 'application/json' } });
-        const user: User = { id: data.user?.id || data.id || email, email: data.user?.email || data.email || email, name: data.user?.name || data.name, token: data.token || data.accessToken };
+        const user: User = { id: data.user?.id || data.id || email, email: data.user?.email || data.email || email, name: `${data.user?.first_name || ''} ${data.user?.last_name || ''}`, token: data.token || data.accessToken };
         saveSession(user);
         return user;
     } catch (err: any) {
@@ -33,7 +33,7 @@ export async function loginUser(email: string, password: string): Promise<User> 
 export async function registerUser(payload: { first_name?: string; last_name?: string; email: string; password: string; confirm: string; }) {
     try {
         const { data } = await axios.post('/api/register', payload, { headers: { Accept: 'application/json' } });
-        const user: User = { id: data.user?.id || data.id || payload.email, email: data.user?.email || data.email || payload.email, name: data.user?.name || `${payload.first_name || ''} ${payload.last_name || ''}`.trim(), token: data.token };
+        const user: User = { id: data.user?.id || data.id || payload.email, email: data.user?.email || data.email || payload.email, name: `${payload.first_name || ''} ${payload.last_name || ''}`.trim(), token: data.token };
         saveSession(user);
         return user;
     } catch (err: any) {
