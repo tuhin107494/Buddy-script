@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use PostResource;
+
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
@@ -16,7 +17,7 @@ class PostController extends Controller
             ->where('is_public', true)
             ->latest()
             ->paginate(15);
-
+        //  dd($posts);
         return PostResource::collection($posts);
     }
 
@@ -40,7 +41,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post->load(['user', 'comments.user', 'likes']);
+        $post->load(['user', 'comments?.user', 'likes']);
         return new PostResource($post);
     }
 

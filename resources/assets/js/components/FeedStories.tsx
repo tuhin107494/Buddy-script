@@ -22,7 +22,7 @@ const FeedStories: React.FC<Props> = ({ currentUser, stories, isUploadingStory, 
            </div>
          ) : (
             <>
-             <img src={currentUser.avatar} alt="My Story" className="w-full h-3/4 object-cover filter brightness-75" />
+             <img src={currentUser?.avatar} alt="My Story" className="w-full h-3/4 object-cover filter brightness-75" />
              <div className="absolute inset-x-0 bottom-0 h-1/4 bg-white z-10 flex flex-col items-center justify-end pb-3">
                 <span className="text-xs font-bold text-gray-900">Your Story</span>
              </div>
@@ -40,10 +40,10 @@ const FeedStories: React.FC<Props> = ({ currentUser, stories, isUploadingStory, 
             <img src={story.imageUrl} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"></div>
             <div className="absolute top-3 right-3 p-0.5 bg-primary rounded-full ring-2 ring-primary ring-offset-2 ring-offset-transparent">
-               <img src={story.user.avatar} className="w-8 h-8 rounded-full border-2 border-white" alt="" />
+               <img src={story.user?.avatar} className="w-8 h-8 rounded-full border-2 border-white" alt="" />
             </div>
             <div className="absolute bottom-3 left-3 right-3">
-               <p className="text-white text-xs font-semibold truncate">{story.user.firstName} {story.user.lastName}</p>
+               <p className="text-white text-xs font-semibold truncate">{story.user?.firstName} {story.user?.lastName}</p>
             </div>
          </div>
       ))}

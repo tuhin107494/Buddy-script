@@ -37,11 +37,11 @@ const RightSidebar: React.FC<{ users: User[]; currentUser: User }> = ({ users })
           </div>
           <ul className="space-y-4">
             {users.map(user => (
-              <li key={user.id} className="flex items-center justify-between">
+              <li key={user?.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src={user.avatar} alt="" className="w-9 h-9 rounded-full bg-gray-200" />
+                  <img src={user?.avatar} alt="" className="w-9 h-9 rounded-full bg-gray-200" />
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">{user.firstName} {user.lastName}</p>
+                    <p className="text-sm font-semibold text-gray-900">{user?.firstName} {user?.lastName}</p>
                     <p className="text-xs text-gray-500">CEO of Company</p>
                   </div>
                 </div>

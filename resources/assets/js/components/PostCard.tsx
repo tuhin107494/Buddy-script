@@ -13,7 +13,7 @@ const CommentNode: React.FC<{
 
   const handleSubmit = () => {
     if (replyText.trim()) {
-      onReply(replyText, comment.id);
+      onReply(replyText, comment?.id);
       setIsReplying(false);
       setReplyText('');
     }
@@ -21,11 +21,11 @@ const CommentNode: React.FC<{
 
   return (
     <div className={`flex gap-2 items-start mt-3 ${depth > 0 ? 'ml-4' : ''}`}>
-      <img src={comment.user.avatar} alt="" className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0" />
+      <img src={comment?.user?.avatar} alt="" className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0" />
       <div className="flex-1 min-w-0">
         <div className="bg-gray-200 rounded-2xl px-3 py-2 inline-block">
-          <p className="text-xs font-bold">{comment.user.firstName}</p>
-          <p className="text-sm text-gray-800 break-words">{comment.content}</p>
+          <p className="text-xs font-bold">{comment?.user?.firstName}</p>
+          <p className="text-sm text-gray-800 break-words">{comment?.content}</p>
         </div>
         <div className="flex gap-3 px-2 mt-1 text-xs text-gray-500 font-medium items-center">
            <Button className="hover:underline !border-none">Like</Button>
@@ -46,7 +46,7 @@ const CommentNode: React.FC<{
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                placeholder={`Reply to ${comment.user.firstName}...`}
+                placeholder={`Reply to ${comment?.user?.firstName}...`}
                 className="flex-1 bg-gray-100 rounded-full px-3 py-1 text-sm outline-none focus:ring-1 focus:ring-primary"
              />
              <Button onClick={handleSubmit} className="!border-none text-primary hover:bg-blue-50 p-1 rounded-full">
@@ -55,9 +55,9 @@ const CommentNode: React.FC<{
           </div>
         )}
 
-        {comment.replies && comment.replies.length > 0 && (
+        {comment?.replies && comment?.replies.length > 0 && (
            <div className="pl-2 mt-2 border-l-2 border-gray-200">
-              {comment.replies.map(reply => (
+              {comment?.replies.map(reply => (
                 <CommentNode key={reply.id} comment={reply} onReply={onReply} depth={depth + 1} />
               ))}
            </div>
@@ -74,20 +74,22 @@ const PostCard: React.FC<{
   onComment: (text: string, parentId?: string) => void;
   timeAgo: string;
 }> = ({ post, currentUserId, onLike, onComment, timeAgo }) => {
+
+  console.log('Post data:', post , timeAgo, 'currentUserId:', currentUserId);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState('');
-  const isLiked = post.likes.includes(currentUserId);
+  const isLiked = post.likes?.includes(currentUserId);
   const isVideo = post.imageUrl?.startsWith('data:video') || post.imageUrl?.match(/\.(mp4|webm|ogg)$/i);
 
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="p-4 flex justify-between items-start">
         <div className="flex gap-3">
-          <img src={post.user.avatar} alt="" className="w-10 h-10 rounded-full bg-gray-200" />
+          <img src={post?.author?.avatar} alt="" className="w-10 h-10 rounded-full bg-gray-200" />
           <div>
-            <h4 className="font-bold text-gray-900 text-sm">{post.user.firstName} {post.user.lastName}</h4>
+            <h6 className="font-bold text-gray-900 text-sm">{post.author?.name}</h6>
             <div className="flex items-center text-xs text-gray-500 gap-1">
-              <span>{timeAgo}</span>
+              <span>{post.created_at}</span>
               <span>•</span>
               <span>{post.privacy === 'public' ? 'Public' : 'Private'}</span>
             </div>
@@ -115,17 +117,17 @@ const PostCard: React.FC<{
 
       <div className="px-4 py-2 flex items-center justify-between text-xs text-gray-500 border-b border-gray-50">
          <div className="flex items-center gap-1">
-            {post.likes.length > 0 && (
+            {post.likes?.length > 0 && (
               <>
                 <div className="bg-primary text-white p-0.5 rounded-full">
                    <Heart className="w-2 h-2 fill-current" />
                 </div>
-                <span>{post.likes.length} Likes</span>
+                <span>{post.likes?.length} Likes</span>
               </>
             )}
          </div>
          <div className="flex gap-3">
-            <span>{post.comments.length} Comments</span>
+            <span>{post.comments?.length} Comments</span>
          </div>
       </div>
 
@@ -153,9 +155,9 @@ const PostCard: React.FC<{
       {showComments && (
         <div className="p-4 bg-gray-50 border-t">
           <div className="space-y-4 mb-4">
-             {post.comments.map(comment => (
+             {post.comments?.map(comment => (
                <CommentNode 
-                  key={comment.id} 
+                  key={comment?.id} 
                   comment={comment} 
                   onReply={(text, parentId) => onComment(text, parentId)} 
                />
@@ -174,7 +176,7 @@ const PostCard: React.FC<{
                        setCommentText('');
                      }
                    }}
-                   placeholder="Write a comment..." 
+                   placeholder="Write a comment?..." 
                    className="w-full rounded-full bg-gray-100 px-4 py-2 pr-10 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
                 <Button 

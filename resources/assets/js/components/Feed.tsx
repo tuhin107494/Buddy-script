@@ -8,6 +8,7 @@ import PostCard from './PostCard';
 import CreatePostCard from './CreatePostCard';
 import FeedStories from './FeedStories';
 import { Input } from 'antd';
+import { createPost, getAllUsers, getPosts, getStories } from '../services/api';
 
 
 interface FeedProps {
@@ -40,41 +41,40 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
     ];
 
 
-    //   const loadData = async () => {
-    //     try {
-    //       const [fetchedPosts, fetchedUsers, fetchedStories] = await Promise.all([
-    //         getPosts(currentUser),
-    //         getAllUsers(),
-    //         getStories()
-    //       ]);
-    //       setPosts(fetchedPosts);
-    //       setUsers(fetchedUsers);
-    //       setStories(fetchedStories);
-    //     } catch (error) {
-    //       console.error("Failed to load feed", error);
-    //     } finally {
-    //       setIsLoading(false);
-    //     }
-    //   };
+      const loadData = async () => {
+        try {
+          const [fetchedPosts, fetchedUsers] = await Promise.all([
+            getPosts(currentUser),
+            getAllUsers(),
+          ]);
+          console.log(fetchedPosts, fetchedUsers);
+          setPosts(fetchedPosts);
+          setUsers(fetchedUsers);
+        } catch (error) {
+          console.error("Failed to load feed", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
     useEffect(() => {
-        // loadData();
+         loadData();
     }, [currentUser]);
 
     const handlePostFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-          setPostError('');
-          try {
-            const processedData = await processFile(file);
-            setNewPostImage(processedData);
-          } catch (err: any) {
-            setPostError(err.message || "Failed to process file");
-          }
+            setPostError('');
+            try {
+                const processedData = await processFile(file);
+                setNewPostImage(processedData);
+            } catch (err: any) {
+                setPostError(err.message || "Failed to process file");
+            }
         }
         // Reset the input
         e.target.value = '';
-      };
+    };
 
     // Utility to compress images
     const processFile = async (file: File): Promise<string> => {
@@ -132,9 +132,30 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
         });
     };
 
-    const handleCreatePost = async () => {
 
+    const handleCreatePost = async () => {
+        if (!newPostContent.trim() && !newPostImage) return;
+        setIsPosting(true);
+        setPostError('');
+        console.log(newPostContent, newPostImage, newPostPrivacy, currentUser);
+        try {
+            await createPost({
+                content: newPostContent,
+                imageUrl: newPostImage.trim() || undefined,
+                privacy: newPostPrivacy,
+                user: currentUser
+            });
+            setNewPostContent('');
+            setNewPostImage('');
+            await loadData(); // Refresh feed
+        } catch (e: any) {
+            console.error(e);
+            setPostError(e.message || "Failed to create post. Storage might be full.");
+        } finally {
+            setIsPosting(false);
+        }
     };
+
 
 
 
@@ -164,7 +185,7 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
                 accept="image/*,video/*"
                 onChange={handlePostFileSelect}
             />
-           
+
 
             <FeedNavbar currentUser={currentUser} onLogout={onLogout} />
 
@@ -211,10 +232,10 @@ const Feed: React.FC<FeedProps> = ({ currentUser, onLogout }) => {
                                     <PostCard
                                         key={post.id}
                                         post={post}
-                                        // currentUserId={currentUser.id}
+                                        currentUserId={currentUser.id}
                                         onLike={() => handleLike(post.id)}
                                         // onComment={(text, parentId) => handleComment(post.id, text, parentId)}
-                                        timeAgo={formatTime(post.createdAt)}
+                                        timeAgo={formatTime(post?.created_at)}
                                     />
                                 ))}
                                 {posts.length === 0 && (

@@ -21,7 +21,7 @@ const CreatePostCard: React.FC<Props> = ({ currentUser, newPostContent, setNewPo
   return (
     <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
       <div className="flex gap-3 mb-4 items-center  pb-4">
-         <img src={currentUser.avatar} alt="" className="w-10 h-10 rounded-full bg-gray-200" />
+         <img src={currentUser?.avatar} alt="" className="w-10 h-10 rounded-full bg-gray-200" />
          <div className="flex-1 relative">
             <Input
               type="text" 
