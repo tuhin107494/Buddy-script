@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import Login from './components/Login';
 import Register from './components/register';
+import Feed from './components/Feed';
 import { User } from './types';
 import { getSession, logoutUser } from './auth';
 
@@ -40,16 +41,22 @@ const App: React.FC = () => {
 
   return (
     <>
-      {currentPage === 'login' ? (
+      {currentPage === 'login' && (
         <Login 
           onLogin={handleLogin} 
           onNavigateToRegister={() => setCurrentPage('register')} 
         />
-      ) : (
+      )}
+
+      {currentPage === 'register' && (
         <Register 
           onLogin={handleLogin} 
           onNavigateToLogin={() => setCurrentPage('login')} 
         />
+      )}
+
+      {currentPage === 'feed' && user && (
+        <Feed currentUser={user} onLogout={handleLogout} />
       )}
     </>
   );
