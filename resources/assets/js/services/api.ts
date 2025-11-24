@@ -32,16 +32,42 @@ export async function getStories(): Promise<Story[]> {
   }
 }
 
-export async function createPost(payload: { body?: string; imageUrl?: string; privacy?: string; user?: User }) {
-  
+export async function createPost(
+  contentOrPayload: string | { body?: string; imageUrl?: string; privacy?: string; user?: User; files?: any[] },
+  files?: File[],
+) {
 
-    payload.body = payload?.content || payload?.body ;
-    
   try {
+    // If caller passed (content: string, files?: File[])
+    if (typeof contentOrPayload === 'string') {
+      const body = contentOrPayload;
+      if (files && files.length) {
+        const fd = new FormData();
+        fd.append('body', body);
+        files.forEach((f) => fd.append('files[]', f));
+        const res = await authFetch('/posts', { method: 'post', data: fd });
+        return res.data;
+      }
+      const res = await authFetch('/posts', { method: 'post', data: { body } });
+      return res.data;
+    }
+
+    // If caller passed a payload object
+    const payload = contentOrPayload || {};
+    // If payload.files appears to be File objects, send multipart
+    if (payload.files && Array.isArray(payload.files) && payload.files.length && payload.files[0] instanceof File) {
+      const fd = new FormData();
+      fd.append('body', payload.body || '');
+      payload.files.forEach((f: File) => fd.append('files[]', f));
+      const res = await authFetch('/posts', { method: 'post', data: fd });
+      return res.data;
+    }
+
+    // Default: send JSON payload
     const res = await authFetch('/posts', { method: 'post', data: payload });
     return res.data;
   } catch (e) {
-    console.warn('createPost failed (mock)', e);
+    console.warn('createPost failed', e);
     return null;
   }
 }

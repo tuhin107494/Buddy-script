@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../css/bootstrap.min.css';
 import '../../../css/common.css';
 import '../../../css/main.css';
@@ -15,8 +15,45 @@ import FeedNavbar from './components/Navbar';
 import FeedLayoutChange from './components/LayoutChange';
 
 import { User } from '../../types';
+import { createPost, getPosts } from '../../services/api';
+import { Post } from '../../types';
 
 const Feed: React.FC<{ currentUser: User | null; onLogout: () => void }> = ({ currentUser, onLogout }) => {
+
+
+    const [posts, setPosts] = useState<Post[]>([]);
+
+    useEffect(() => {
+        // load initial posts (best-effort)
+        let mounted = true;
+        (async () => {
+            try {
+                const fetched = await getPosts(currentUser ?? undefined);
+                if (mounted) setPosts(fetched ?? []);
+            } catch (err) {
+                console.warn('failed to load posts', err);
+            }
+        })();
+        return () => { mounted = false };
+    }, [currentUser]);
+
+    const handleCreatePost = async (content: string, files?: File[]) => {
+        if (!currentUser) {
+            console.warn('No current user, cannot create post');
+            return null;
+        }
+        try {
+            // Pass content and File[] directly to createPost; createPost will use FormData if files exist
+            const res = await createPost(content, files);
+            // If API returns created post, prepend it for immediate UI feedback
+            const newPost = res?.data ?? res ?? { body: content, user: currentUser };
+            setPosts(prev => [newPost, ...prev]);
+            return res;
+        } catch (err) {
+            console.error('create post failed', err);
+            return null;
+        }
+    };
 
     return (
         <div className="_layout _layout_main_wrapper">
@@ -48,7 +85,11 @@ const Feed: React.FC<{ currentUser: User | null; onLogout: () => void }> = ({ cu
                                         <FeedStories />
 
                                         {/*create post area*/}
-                                        <CreatePostCard />
+                                        <CreatePostCard
+                                            currentUser={currentUser}
+                                            handleSubmit={handleCreatePost}
+                                        />
+
 
                                         {/* feed area */}
                                         <FeedPostCard />
