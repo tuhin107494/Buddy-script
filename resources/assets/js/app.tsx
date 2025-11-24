@@ -64,8 +64,6 @@ const App: React.FC = () => {
         />
       )}
 
-      {console.log('2342151 Feed, user:', user, user?.name)}
-
       {currentPage === 'feed' && user && (
         <Feed currentUser={user} onLogout={handleLogout} />
       )}
