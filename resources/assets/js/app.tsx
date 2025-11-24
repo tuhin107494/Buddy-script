@@ -8,7 +8,7 @@ import '../css/responsive.css';
 import ReactDOM from 'react-dom/client';
 import Login from './components/Login';
 import Register from './components/register';
-import Feed from './components/Feed';
+import Feed from './components/Feed/Feed';
 import { User } from './types';
 import { getSession, logoutUser } from './auth';
 
@@ -51,7 +51,7 @@ const App: React.FC = () => {
   return (
     <>
       {currentPage === 'login' && (
-        <Login 
+        <Login
           onLogin={handleLogin} 
           onNavigateToRegister={() => setCurrentPage('register')} 
         />
@@ -63,6 +63,8 @@ const App: React.FC = () => {
           onNavigateToLogin={() => setCurrentPage('login')} 
         />
       )}
+
+      {console.log('2342151 Feed, user:', user, user?.name)}
 
       {currentPage === 'feed' && user && (
         <Feed currentUser={user} onLogout={handleLogout} />
