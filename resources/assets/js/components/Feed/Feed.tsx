@@ -24,11 +24,14 @@ const Feed: React.FC<{ currentUser: User | null; onLogout: () => void }> = ({ cu
     const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        // load initial posts (best-effort)
+  
         let mounted = true;
         (async () => {
             try {
-                const fetched = await getPosts(currentUser ?? undefined);
+                const lastId = posts[posts.length - 1]?.id;
+
+                const fetched = await getPosts(currentUser ?? undefined, lastId);
+                console.log('fetched posts:', fetched);
                 if (mounted) setPosts(fetched ?? []);
             } catch (err) {
                 console.warn('failed to load posts', err);
@@ -92,7 +95,15 @@ const Feed: React.FC<{ currentUser: User | null; onLogout: () => void }> = ({ cu
 
 
                                         {/* feed area */}
-                                        <FeedPostCard />
+                                        {posts.length > 0 && (
+                                            <FeedPostCard
+                                                posts={posts}
+                                                setPosts={setPosts}
+                                            />
+                                        )}
+                                        {posts.length === 0 && (
+                                            <p>No posts to display.</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
